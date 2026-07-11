@@ -36,10 +36,12 @@ def predict(data: InsuranceModel):
 
     #you can also use:
     # user_input_dict = pd.DataFrame([data.model_dump(exclude=["age", "height", "weight", "smoker", "city"])])
-
-    return JSONResponse(
-        status_code=200,
-        content={
-            "predicted_category": pred
-        }
-    )
+    try:
+        return JSONResponse(
+            status_code=200,
+            content={
+                "predicted_category": pred
+            }
+        )
+    except Exception as e:
+        return JSONResponse(status_code=500, content=str(e))
