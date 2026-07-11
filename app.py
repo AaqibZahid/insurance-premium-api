@@ -1,14 +1,10 @@
-"""
-- This file contains code for processing of the user input data for the POST method API of the model for its inference.
-- it contains:
-    - the import model pickle file
-    - the POST api endpoint with the query params
-    - the data model for type and processing validation of the input data
-    - the processing of user request and then the response for it (prediction) at localhost 
-"""
+import pickle
+from fastapi import FastAPI, Query, Path
+import pandas as pd
+from fastapi.responses import JSONResponse
+from schema.user_input import InsuranceModel 
 
 # get the pickle file in the code
-import pickle
 with open("model/model.pkl", 'rb') as file:
     model = pickle.load(file)
 
@@ -16,12 +12,7 @@ with open("model/model.pkl", 'rb') as file:
 MODEL_VERSION = "1.0.0"
 
 # FASTAPI app
-from fastapi import FastAPI, Query, Path
 app = FastAPI()
-
-import pandas as pd
-from fastapi.responses import JSONResponse
-from schema.user_input import InsuranceModel 
 
 # Home endpoint for telling that the api is running and whats it about (human readable)
 @app.get("/")

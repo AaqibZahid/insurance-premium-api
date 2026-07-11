@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, computed_field, field_validator
 from typing import Literal, List, Annotated
+from config.city_tier import tier_1_cities, tier_2_cities
 
 """
 Fields in the raw dataset
@@ -55,19 +56,10 @@ class InsuranceModel(BaseModel):
             return "medium"
         else:
             return "low"
-        
+
     @computed_field
     @property
     def city_tier(city) -> int:
-        tier_1_cities = ["Mumbai", "Delhi", "Bangalore", "Chennai", "Kolkata", "Hyderabad", "Pune"]
-        tier_2_cities = [
-            "Jaipur", "Chandigarh", "Indore", "Lucknow", "Patna", "Ranchi", "Visakhapatnam", "Coimbatore",
-            "Bhopal", "Nagpur", "Vadodara", "Surat", "Rajkot", "Jodhpur", "Raipur", "Amritsar", "Varanasi",
-            "Agra", "Dehradun", "Mysore", "Jabalpur", "Guwahati", "Thiruvananthapuram", "Ludhiana", "Nashik",
-            "Allahabad", "Udaipur", "Aurangabad", "Hubli", "Belgaum", "Salem", "Vijayawada", "Tiruchirappalli",
-            "Bhavnagar", "Gwalior", "Dhanbad", "Bareilly", "Aligarh", "Gaya", "Kozhikode", "Warangal",
-            "Kolhapur", "Bilaspur", "Jalandhar", "Noida", "Guntur", "Asansol", "Siliguri"
-        ]
         if city in tier_1_cities:
             return 1
         elif city in tier_2_cities:
