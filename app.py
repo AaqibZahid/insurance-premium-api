@@ -2,6 +2,7 @@ from fastapi import FastAPI, Query, Path
 from fastapi.responses import JSONResponse
 from schema.user_input import InsuranceModel 
 from model.predict import predictOutput, model, MODEL_VERSION
+from schema.prediction_response import PredictionResponse
 
 # FASTAPI app
 app = FastAPI()
@@ -21,7 +22,7 @@ def healthCheck():
     }
 
 # writing the POST endpoint function
-@app.post('/predict')
+@app.post('/predict', response_model=PredictionResponse)
 def predict(data: InsuranceModel):
     user_input = {
         "bmi": data.bmi,
