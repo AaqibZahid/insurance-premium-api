@@ -40,7 +40,7 @@ def predict(data: InsuranceModel):
         return JSONResponse(
             status_code=200,
             content={
-                "predicted_category": pred
+                "response": pred
             }
         )
     except Exception as e:
