@@ -1,0 +1,15 @@
+# version control
+.git
+.gitignore
+
+# virtual environment
+myenv/
+
+# python artifacts
+__pycache__/
+*.pyc
+*.pyo
+
+# docs & local files
+docker.md
+*.log
