@@ -1,8 +1,10 @@
 import pickle
 import pandas as pd
+from pathlib import Path
 
-# get the pickle file in the code
-with open("model/model.pkl", 'rb') as file:
+# get the pickle file in the code (absolute path so it works from any working directory)
+MODEL_PATH = Path(__file__).parent / "model.pkl"
+with open(MODEL_PATH, 'rb') as file:
     model = pickle.load(file)
 
 # ML flow's model registery traacks what version of the model we have but here we set this up manually
