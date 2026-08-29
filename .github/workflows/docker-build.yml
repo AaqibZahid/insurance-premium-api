@@ -1,0 +1,42 @@
+name: Docker build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t insurance-premium-predictor:1.0.0 .
+
+      - name: Run container
+        run: |
+          docker run -d --name insurance-app -p 8000:8000 insurance-premium-predictor:1.0.0
+          # wait for the API to come up
+          for i in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:8000/health > /dev/null; then
+              break
+            fi
+            sleep 1
+          done
+
+      - name: Smoke test /health
+        run: |
+          curl -sf http://127.0.0.1:8000/health | grep -q '"status":"OK"'
+
+      - name: Smoke test /predict
+        run: |
+          curl -sf -X POST http://127.0.0.1:8000/predict \
+            -H "Content-Type: application/json" \
+            -d '{"age":34,"weight":70.0,"height":1.7,"income_lpa":12.5,"smoker":false,"city":"Mumbai","occupation":"private_job"}' \
+            | grep -q '"predicted_category"'
+
+      - name: Show container logs (on any failure)
+        if: failure()
+        run: docker logs insurance-app
