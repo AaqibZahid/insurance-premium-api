@@ -21,7 +21,7 @@ class InsuranceModel(BaseModel):
     income_lpa: Annotated[float, Field(..., gt=0, description="annual income in normalized numeric representation")]
     smoker: Annotated[bool, Field(..., description="is the person a habitual smoker or not")]
     city: Annotated[str, Field(..., description="city that the person is from")]
-    occupation: Annotated[Literal[ 'retired','freelancer','student','government_job', 'business_owner','unemployed' 'private_job'] , Field(..., description="job domain of the person among 'retired','freelancer','student','government_job', 'business_owner','unemployed', or 'private_job'")]
+    occupation: Annotated[Literal[ 'retired','freelancer','student','government_job', 'business_owner','unemployed','private_job'] , Field(..., description="job domain of the person among 'retired','freelancer','student','government_job', 'business_owner','unemployed', or 'private_job'")]
 
 # field validator for auto-title-casing the city parameter value
     @field_validator('city')
@@ -59,10 +59,10 @@ class InsuranceModel(BaseModel):
 
     @computed_field
     @property
-    def city_tier(city) -> int:
-        if city in tier_1_cities:
+    def city_tier(self) -> int:
+        if self.city in tier_1_cities:
             return 1
-        elif city in tier_2_cities:
+        elif self.city in tier_2_cities:
             return 2
         else:
             return 3
